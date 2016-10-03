@@ -1,0 +1,88 @@
+\documentclass{article}
+\usepackage{graphicx}
+\title{CS132 HW1}
+\author{Maolei Tang}
+\date{Oct 2016}
+
+\begin{document}
+
+\maketitle
+
+\section*{Grammar}
+Production1: $Goal$ $\rightarrow$  $Expr1$  $\$$ \\
+Production2: $Expr1$ $\rightarrow$  $Expr2$ $Expr1'$\\
+Production3: $Expr1'$ $\rightarrow$  $Expr2''$ $Expr1'$ $|$ $\epsilon$\\
+Production4: $Expr2$ $\rightarrow$  $Expr3''$ $Expr2'$\\
+Production5: $Expr2'$ $\rightarrow$  $+$ $Expr3$ $|$ $-$ $Expr3'$ $|$ $\epsilon$\\
+Production6: $Expr2''$ $\rightarrow$ $Expr4$ $Expr2'$\\
+Production7: $Expr3$ $\rightarrow$  $--$ $Expr3''$ $|$ $Expr4$\\
+Production8: $Expr3'$ $\rightarrow$  $++$ $Expr3''$ $|$ $Expr4$\\
+Production9: $Expr3''$ $\rightarrow$ $++$ $Expr3''$ $|$ $--$ $Expr3''$ $|$ $\epsilon$\\
+Production10: $Expr4$ $\rightarrow$  $Expr5$ $Expr4'$\\
+Production11: $Expr4'$ $\rightarrow$  $++$ $Expr4'$ $|$ $--$ $Expr4'$ $|$ $\epsilon$\\
+Production12: $Expr5$ $\rightarrow$ F $|$ $Expr5$ $|$ $Num$ $|$ $(Expr1)$\\
+\section*{First and Follow Table}
+\begin{tabular}{a|b|c|d}
+\hline
+&Nullable&FIRST&FOLLOW\\
+\hline
+Goal&No&++, - -, F, Num, (&\$\\
+\hline
+Expr1&No&++, - -, F, Num, (&\$, )\\
+\hline
+Expr1'&Yes&F, Num, (&\$, )\\
+\hline
+Expr2&No&++, - -, F, Num, (&\$, ), F, Num, (\\
+\hline
+Expr2'&Yes&+, -&\$, ), F, Num, (\\
+\hline
+Expr2''&No&+, -&\$, ), F, Num, (\\
+\hline
+Expr3&No&- -, F, Num, (&+, -, \$, ), F, Num, (\\
+\hline
+Expr3'&No&++, F, Num, (&+, -, \$, ), F, Num, (\\
+\hline
+Expr3''&No&++, - -, F, Num, (&+, -, \$, ), F, Num, (\\
+\hline
+Expr4&No&F, Num, (&+, -, \$, ), F, Num, (\\
+\hline
+Expr4'&Yes&++, - -&+, -, \$, ), F, Num, (\\
+\hline
+Expr5&No&F, Num, (&++, - -, +, -, \$, ), F, Num, (\\
+\hline
+\end{tabular}
+\section*{Predictive Table}
+\begin{tabular}{a|a|a|a|a|a|a|a|a|a}
+\hline
+&Num&+&-&(&)&F&++&- -&\$\\
+\hline
+Goal&1&error&error&1&error&1&1&1&error\\
+\hline
+Expr1&2&error&error&2&error&2&2&2&error\\
+\hline
+Expr1'&3&-&-&3&-&3&-&-&-\\
+\hline
+Expr2&4&error&error&4&error&4&4&4&error\\
+\hline
+Expr2'&-&5&5&-&-&-&-&-&-\\
+\hline
+Expr2''&6&error&error&6&error&6&error&error&error\\
+\hline
+Expr3&7&error&error&7&error&error&error&7&error\\
+\hline
+Expr3'&8&error&error&8&error&error&8&error&error\\
+\hline
+Expr3''&9&error&error&9&error&9&9&9&error\\
+\hline
+Expr4&10&error&error&10&error&10&error&error&error\\
+\hline
+Expr4'&-&-&-&-&-&-&11&11&-\\
+\hline
+Expr5&12&error&error&12&error&12&error&error&error\\
+\hline
+\end{tabular}
+\\
+\\
+My language is LL(1) because it follow two rules:\\
+There is only one production in each cell in the predictive table and there is no intersected set for $Expr1$'s FIRST and FOLLOW, $Expr2$'s FIRST and FOLLOW and $Expr4$'s FIRST and FOLLOW. Therefore, it is LL(1) language.\\
+\end{document}
